@@ -1,0 +1,13 @@
+- tenant:
+    name: github-test
+    source:
+      zuul-git:
+        config-projects:
+          - openstack-infra/zuul-base-jobs
+        untrusted-projects:
+          - openstack-infra/zuul-jobs
+      my_github:
+        config-projects:
+          - zuul-org/zuul-test-config
+        untrusted-projects:
+          - zuul-org/zuul-test

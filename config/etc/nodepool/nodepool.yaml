@@ -1,0 +1,27 @@
+webapp:
+  port: 8005
+  listen_address: '0.0.0.0'
+
+elements-dir: /etc/nodepool/elements
+
+images-dir: /var/lib/nodepool/images
+
+zookeeper-servers:
+  - host: localhost
+
+labels:
+  - name: my-label
+    min-ready: 1
+
+providers:
+  - name: static-entry
+    driver: static
+    pools:
+      - name: main
+        nodes:
+          - name: <hostname>
+            labels: my-label
+            host-key: <get from running ssh-keyscan -t ed25519 <hostname> "starts with ssh-ed25519">
+            username: zuul
+            max-parallel-jobs: 15
+

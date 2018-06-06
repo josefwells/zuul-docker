@@ -1,0 +1,40 @@
+version: '3'
+services:
+  zookeeper:
+    user: root
+    command: service zookeeper start
+    build: .
+    ports:
+     - "2181:2181"
+  nodepool:
+    user: nodepool
+    command: /var/lib/nodepool/.local/bin/nodepool-launcher
+    build: .
+    ports:
+      - "4730:4730"
+      - "8005:8005"
+    depends_on:
+      - "zookeeper"
+  zuul-scheduler:
+    user: zuul
+    command: /var/lib/zuul/.local/bin/zuul-scheduler
+    build: .
+    depends_on:
+      - "nodepool"
+  zuul-executor:
+    user: zuul
+    command: /var/lib/zuul/.local/bin/zuul-executor
+    build: .
+    ports:
+      - "7900:7900"
+    depends_on:
+      - "zuul-scheduler"
+  zuul-web:
+    user: zuul
+    command: /var/lib/zuul/.local/bin/zuul-web
+    build: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - "zuul-executor"
+      
